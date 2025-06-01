@@ -26,6 +26,12 @@
             ],
             "styles": [
               "src/styles.css"
+            ],
+            "scripts": [
+              "src/assets/admin-lte/plugins/jquery/jquery.min.js",
+              "src/assets/admin-lte/plugins/bootstrap/js/bootstrap.bundle.min.js",
+              "src/assets/admin-lte/plugins/bs-custom-file-input/bs-custom-file-input.min.js",
+              "src/assets/admin-lte/dist/js/adminlte.min.js"
             ]
           },
           "configurations": {
