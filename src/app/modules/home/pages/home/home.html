@@ -110,6 +110,7 @@
                   @for (typeRecord of typeRecords(); track typeRecord.lineIdentifier) {
                     <button type="button"
                             class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+                            (click)="selectTypeRecord(typeRecord)"
                             aria-current="true">
                       {{ typeRecord.name }}
                       <span class="badge badge-secondary badge-pill">{{ typeRecord.recordField.length }}</span>

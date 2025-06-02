@@ -18,6 +18,12 @@ export class Home {
 
   typeRecords = signal<TypeRecord[]>([]);
 
+  selectedTypeRecord = signal<TypeRecord>({
+    name: '',
+    lineIdentifier: '',
+    recordField: []
+  });
+
   typeRecordForm = this.formBuilder.nonNullable.group({
     name: [''],
     lineIdentifier: [''],
@@ -99,5 +105,9 @@ export class Home {
     }
 
     return recordFields;
+  }
+
+  selectTypeRecord(typeRecord: TypeRecord) {
+    this.selectedTypeRecord.set(typeRecord);
   }
 }
