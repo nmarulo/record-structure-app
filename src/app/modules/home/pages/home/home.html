@@ -107,18 +107,14 @@
               <div class="card-body">
                 <p><strong>Tipos de registros:</strong></p>
                 <div class="list-group">
-                  <button type="button"
-                          class="list-group-item list-group-item-action d-flex justify-content-between align-items-center active"
-                          aria-current="true">
-                    Tipo de registro 1
-                    <span class="badge badge-secondary badge-pill">6</span>
-                  </button>
-                  <button type="button"
-                          class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
-                          aria-current="true">
-                    Tipo de registro 2
-                    <span class="badge badge-secondary badge-pill">20</span>
-                  </button>
+                  @for (typeRecord of typeRecords(); track typeRecord.lineIdentifier) {
+                    <button type="button"
+                            class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+                            aria-current="true">
+                      {{ typeRecord.name }}
+                      <span class="badge badge-secondary badge-pill">{{ typeRecord.recordField.length }}</span>
+                    </button>
+                  }
                 </div>
               </div>
             </div>
