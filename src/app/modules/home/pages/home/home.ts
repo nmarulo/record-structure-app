@@ -24,7 +24,7 @@ export class Home implements OnInit {
   selectedTypeRecord = signal<TypeRecord>({
     name: '',
     lineIdentifier: '',
-    recordField: []
+    filedTypeRecord: []
   });
 
   typeRecordForm = this.formBuilder.nonNullable.group({
@@ -39,7 +39,7 @@ export class Home implements OnInit {
 
   ngOnInit(): void {
     this.fileInput.valueChanges.subscribe(value => {
-      if (this.selectedTypeRecord().recordField.length) {
+      if (this.selectedTypeRecord().filedTypeRecord.length) {
         this.recordStructureFromFile(value, this.selectedTypeRecord());
       }
     });
@@ -49,7 +49,7 @@ export class Home implements OnInit {
     const request: RecordStructureFileReq = {
       filePath: value,
       lineIdentifier: typeRecord.lineIdentifier,
-      recordFields: typeRecord.recordField
+      recordFields: typeRecord.filedTypeRecord
     };
 
     this.recordStructure.recordStructureFromFile(request)
@@ -74,7 +74,7 @@ export class Home implements OnInit {
     const typeRecord: TypeRecord = {
       name: this.typeRecordForm.value.name!,
       lineIdentifier: this.typeRecordForm.value.lineIdentifier!,
-      recordField: recordFields
+      filedTypeRecord: recordFields
     };
 
     this.typeRecords.update(value => {
