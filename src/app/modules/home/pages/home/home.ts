@@ -53,8 +53,8 @@ export class Home {
   }
 
   private lineIdentifierExists() {
-    if (this.typeRecords().length) {
-      return true;
+    if (this.typeRecords().length == 0) {
+      return false;
     }
 
     return this.typeRecords()
