@@ -165,7 +165,7 @@
             </div>
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Tipo de registro 1</h3>
+                <h3 class="card-title">{{ selectedTypeRecord().name }}</h3>
                 <div class="card-tools">
                   <button class="btn btn-tool btn-sm">
                     <i class="fas fa-download"></i>
@@ -197,23 +197,19 @@
                 <table class="table table-hover text-nowrap">
                   <thead>
                   <tr>
-                    <th>Identificar</th>
-                    <th>Matricula</th>
-                    <th>Descripción</th>
-                    <th>Importe</th>
-                    <th>IVA</th>
-                    <th>Fecha</th>
+                    @for (fieldTypeRecord of selectedTypeRecord().filedTypeRecord; track fieldTypeRecord.order) {
+                      <th>{{ fieldTypeRecord.columnName }}</th>
+                    }
                   </tr>
                   </thead>
                   <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>ABC123</td>
-                    <td>EJEMPLO DE REGISTRO</td>
-                    <td>12345.67</td>
-                    <td>9.1</td>
-                    <td>2025-05-31</td>
-                  </tr>
+                    @for (recordStructureRes of recordStructureFileRes().recordStructures; track recordStructureRes) {
+                      <tr>
+                        @for (structuredRecord of recordStructureRes.structuredRecords; track structuredRecord.order) {
+                          <td>{{ structuredRecord.value }}</td>
+                        }
+                      </tr>
+                    }
                   </tbody>
                 </table>
               </div>

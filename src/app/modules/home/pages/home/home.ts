@@ -4,6 +4,7 @@ import {FieldTypeRecord, TypeRecord} from '@app/models/type-record';
 import {RecordStructure} from '@app/services/pages/record-structure';
 import {RecordStructureFileReq} from '@app/models/record-structure-file-req';
 import {tap} from 'rxjs';
+import {RecordStructureFileRes} from '@app/models/record-structure-file-res';
 
 @Component({
   selector: 'app-home',
@@ -18,6 +19,10 @@ export class Home implements OnInit {
   private formBuilder = inject(FormBuilder);
 
   fileInput: FormControl = new FormControl('', {nonNullable: true});
+
+  recordStructureFileRes = signal<RecordStructureFileRes>({
+    recordStructures: []
+  });
 
   typeRecords = signal<TypeRecord[]>([]);
 
@@ -56,6 +61,7 @@ export class Home implements OnInit {
         .pipe(
           tap(response => {
             console.log(response);
+            this.recordStructureFileRes.set(response);
           })
         )
         .subscribe();
