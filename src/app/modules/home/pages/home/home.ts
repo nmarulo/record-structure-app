@@ -1,6 +1,9 @@
-import {Component, inject, signal} from '@angular/core';
+import {Component, inject, OnInit, signal} from '@angular/core';
 import {FormBuilder, FormControl, ReactiveFormsModule} from '@angular/forms';
 import {FieldTypeRecord, TypeRecord} from '@app/models/type-record';
+import {RecordStructure} from '@app/services/pages/record-structure';
+import {RecordStructureFileReq} from '@app/models/record-structure-file-req';
+import {tap} from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -10,7 +13,7 @@ import {FieldTypeRecord, TypeRecord} from '@app/models/type-record';
   templateUrl: './home.html',
   styleUrl: './home.css'
 })
-export class Home {
+export class Home implements OnInit {
 
   private formBuilder = inject(FormBuilder);
 
@@ -31,7 +34,31 @@ export class Home {
     columns: ['']
   });
 
-  constructor() {
+  constructor(private recordStructure: RecordStructure) {
+  }
+
+  ngOnInit(): void {
+    this.fileInput.valueChanges.subscribe(value => {
+      if (this.selectedTypeRecord().recordField.length) {
+        this.recordStructureFromFile(value, this.selectedTypeRecord());
+      }
+    });
+  }
+
+  recordStructureFromFile(value: string, typeRecord: TypeRecord) {
+    const request: RecordStructureFileReq = {
+      filePath: value,
+      lineIdentifier: typeRecord.lineIdentifier,
+      recordFields: typeRecord.recordField
+    };
+
+    this.recordStructure.recordStructureFromFile(request)
+        .pipe(
+          tap(response => {
+            console.log(response);
+          })
+        )
+        .subscribe();
   }
 
   typeRecordSubmit() {
@@ -109,5 +136,9 @@ export class Home {
 
   selectTypeRecord(typeRecord: TypeRecord) {
     this.selectedTypeRecord.set(typeRecord);
+
+    if (this.fileInput.value !== '') {
+      this.recordStructureFromFile(this.fileInput.value, typeRecord);
+    }
   }
 }
