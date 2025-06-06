@@ -1,4 +1,4 @@
-import {app, BrowserWindow, ipcMain} from 'electron';
+import {app, BrowserWindow, dialog, ipcMain} from 'electron';
 import * as path from 'path';
 import * as fs from 'fs';
 
@@ -58,7 +58,20 @@ ipcMain.handle('get-app-version', () => {
   return app.getVersion();
 });
 
-ipcMain.handle('show-message', (event, message: string) => {
-  console.log('Mensaje desde renderer:', message);
-  return `Respuesta del main: ${message}`;
+ipcMain.handle('select-file', async () => {
+  const result = await dialog.showOpenDialog(mainWindow, {
+    properties: ['openFile'],
+    filters: [
+      {
+        name: 'Todos los archivos',
+        extensions: ['*']
+      }
+    ]
+  });
+
+  if (!result.canceled && result.filePaths.length > 0) {
+    return result.filePaths[0];
+  }
+
+  return null;
 });
