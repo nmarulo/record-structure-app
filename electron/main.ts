@@ -21,7 +21,7 @@ function createWindow(): void {
     mainWindow.loadURL('http://localhost:4200');
     mainWindow.webContents.openDevTools();
   } else {
-    const indexPath = path.join(__dirname, '../dist/record-structure-app/browser/index.html');
+    const indexPath = path.join(__dirname, '../record-structure-app/browser/index.html');
 
     if (fs.existsSync(indexPath)) {
       mainWindow.loadFile(indexPath);

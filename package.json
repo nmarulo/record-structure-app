@@ -8,9 +8,10 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "electron:build": "tsc -p electron/tsconfig.json && ng build --base-href ./",
+    "electron:build": "tsc -p electron/tsconfig.json && ng build --configuration production --base-href ./",
     "electron:serve": "tsc -p electron/tsconfig.json && concurrently \"ng serve\" \"wait-on http://localhost:4200 && electron .\"",
-    "electron:package": "npm run electron:build && electron-builder build --publish=never"
+    "electron:package": "npm run electron:build && electron-builder build --publish=never",
+    "electron:package:win": "npm run electron:build && electron-builder build --windows --publish=never"
   },
   "private": true,
   "dependencies": {
@@ -55,6 +56,12 @@
     ],
     "win": {
       "target": "nsis"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": false,
+      "createStartMenuShortcut": false
     },
     "mac": {
       "target": "dmg"
