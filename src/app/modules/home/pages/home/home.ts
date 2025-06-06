@@ -1,10 +1,11 @@
-import {Component, inject, OnInit, signal} from '@angular/core';
-import {FormBuilder, FormControl, ReactiveFormsModule} from '@angular/forms';
+import {Component, effect, inject, signal} from '@angular/core';
+import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
 import {FieldTypeRecord, TypeRecord} from '@app/models/type-record';
 import {RecordStructure} from '@app/services/pages/record-structure';
 import {RecordStructureFileReq} from '@app/models/record-structure-file-req';
 import {tap} from 'rxjs';
 import {RecordStructureFileRes} from '@app/models/record-structure-file-res';
+import {ElectronService} from '@app/services/electron.service';
 
 @Component({
   selector: 'app-home',
@@ -14,11 +15,9 @@ import {RecordStructureFileRes} from '@app/models/record-structure-file-res';
   templateUrl: './home.html',
   styleUrl: './home.css'
 })
-export class Home implements OnInit {
+export class Home {
 
   private formBuilder = inject(FormBuilder);
-
-  fileInput: FormControl = new FormControl('', {nonNullable: true});
 
   recordStructureFileRes = signal<RecordStructureFileRes>({
     recordStructures: []
@@ -32,6 +31,8 @@ export class Home implements OnInit {
     filedTypeRecord: []
   });
 
+  selectedFilePath = signal<string>('');
+
   typeRecordForm = this.formBuilder.nonNullable.group({
     name: [''],
     lineIdentifier: [''],
@@ -39,20 +40,23 @@ export class Home implements OnInit {
     columns: ['']
   });
 
-  constructor(private recordStructure: RecordStructure) {
-  }
+  constructor(
+    private recordStructure: RecordStructure,
+    private electronService: ElectronService
+  ) {
+    effect(() => {
+      const filePath = this.selectedFilePath();
+      const typeRecord = this.selectedTypeRecord();
 
-  ngOnInit(): void {
-    this.fileInput.valueChanges.subscribe(value => {
-      if (this.selectedTypeRecord().filedTypeRecord.length) {
-        this.recordStructureFromFile(value, this.selectedTypeRecord());
+      if (filePath && typeRecord.filedTypeRecord.length) {
+        this.recordStructureFromFile(filePath, this.selectedTypeRecord());
       }
     });
   }
 
-  recordStructureFromFile(value: string, typeRecord: TypeRecord) {
+  recordStructureFromFile(filePath: string, typeRecord: TypeRecord) {
     const request: RecordStructureFileReq = {
-      filePath: value,
+      filePath: filePath,
       lineIdentifier: typeRecord.lineIdentifier,
       recordFields: typeRecord.filedTypeRecord
     };
@@ -142,9 +146,19 @@ export class Home implements OnInit {
 
   selectTypeRecord(typeRecord: TypeRecord) {
     this.selectedTypeRecord.set(typeRecord);
+  }
 
-    if (this.fileInput.value !== '') {
-      this.recordStructureFromFile(this.fileInput.value, typeRecord);
+  openFileSelector() {
+    if (this.electronService.isElectron) {
+      this.electronService.selectFile()
+          .pipe(
+            tap(value => {
+              console.log('Selected file path:', value);
+              this.selectedFilePath.set(value);
+            })
+          )
+          .subscribe();
     }
   }
+
 }
