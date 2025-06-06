@@ -1,12 +1,16 @@
 {
   "name": "record-structure-app",
   "version": "0.0.1",
+  "main": "dist/electron/main.js",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "electron:build": "tsc -p electron/tsconfig.json && ng build --base-href ./",
+    "electron:serve": "tsc -p electron/tsconfig.json && concurrently \"ng serve\" \"wait-on http://localhost:4200 && electron .\"",
+    "electron:package": "npm run electron:build && electron-builder build --publish=never"
   },
   "private": true,
   "dependencies": {
@@ -25,12 +29,38 @@
     "@angular/cli": "20.0.0",
     "@angular/compiler-cli": "20.0.0",
     "@types/jasmine": "5.1.8",
+    "@types/node": "22.15.29",
+    "concurrently": "9.1.2",
+    "electron": "36.3.2",
+    "electron-builder": "26.0.12",
     "jasmine-core": "5.7.1",
     "karma": "6.4.4",
     "karma-chrome-launcher": "3.2.0",
     "karma-coverage": "2.2.1",
     "karma-jasmine": "5.1.0",
     "karma-jasmine-html-reporter": "2.1.0",
-    "typescript": "5.8.3"
+    "ts-node": "10.9.2",
+    "typescript": "5.8.3",
+    "wait-on": "8.0.3"
+  },
+  "build": {
+    "appId": "dev.nmarulo.record_structure.app",
+    "productName": "Record Structure App",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": "nsis"
+    },
+    "mac": {
+      "target": "dmg"
+    },
+    "linux": {
+      "target": "AppImage"
+    }
   }
 }
