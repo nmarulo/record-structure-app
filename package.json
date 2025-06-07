@@ -54,6 +54,12 @@
       "dist/**/*",
       "package.json"
     ],
+    "extraResources": [
+      {
+        "from": "backend",
+        "to": "api"
+      }
+    ],
     "win": {
       "target": "nsis"
     },
