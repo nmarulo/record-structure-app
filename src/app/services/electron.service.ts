@@ -23,4 +23,12 @@ export class ElectronService {
 
     return from('');
   }
+
+  startSpringBoot() {
+    if (this.isElectron) {
+      return from(this.electronAPI.startSpringBoot()) as Observable<void>;
+    }
+
+    return from(Promise.resolve());
+  }
 }

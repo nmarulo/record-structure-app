@@ -10,7 +10,7 @@ import {RecordStructureRes} from '@app/models/record-structure-res';
 })
 export class RecordStructure {
 
-  private readonly _recordStructureUri = 'http://localhost:8080/record-structure';
+  private readonly _recordStructureUri = 'http://localhost:8099/record-structure';
 
   constructor(private httpClient: HttpClient) {
   }
