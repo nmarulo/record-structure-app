@@ -117,10 +117,14 @@
             </div>
           </div>
           <div class="col-9">
-            @if (showNewForm()) {
+            @if (showNewForm() || showEditForm()) {
               <div class="card">
                 <div class="card-header">
-                  <h3 class="card-title">Nuevo tipo de registro</h3>
+                  @if (showEditForm()) {
+                    <h3 class="card-title">Editar tipo de registro: {{ selectedTypeRecord().name }}</h3>
+                  } @else {
+                    <h3 class="card-title">Nuevo tipo de registro</h3>
+                  }
                 </div>
                 <div class="card-body">
                   <form class="row"
@@ -178,6 +182,7 @@
                       <div class="dropdown-menu dropdown-menu-right"
                            role="menu">
                         <button type="button"
+                                (click)="editSelectedTypeRecord()"
                                 class="dropdown-item">
                           <i class="fas fa-edit w-25"></i>
                           Editar

@@ -10,7 +10,8 @@ import {ElectronService} from '@app/services/electron.service';
 const initTypeRecord = {
   name: '',
   lineIdentifier: '',
-  filedTypeRecord: []
+  filedTypeRecord: [],
+  formControl: null as any
 };
 
 @Component({
@@ -36,6 +37,8 @@ export class Home {
   selectedFilePath = signal<string>('');
 
   showNewForm = signal(true);
+
+  showEditForm = signal(false);
 
   typeRecordForm = this.formBuilder.nonNullable.group({
     name: [''],
@@ -76,9 +79,7 @@ export class Home {
   }
 
   typeRecordSubmit() {
-    this.showNewForm.set(false);
-
-    if (this.lineIdentifierExists()) {
+    if (this.lineIdentifierExists() && !this.showEditForm()) {
       console.log('error: El identificador de linea ya existe.');
 
       return;
@@ -90,15 +91,27 @@ export class Home {
     const typeRecord: TypeRecord = {
       name: this.typeRecordForm.value.name!,
       lineIdentifier: this.typeRecordForm.value.lineIdentifier!,
-      filedTypeRecord: recordFields
+      filedTypeRecord: recordFields,
+      formControl: this.typeRecordForm.getRawValue() as any
     };
 
     this.typeRecords.update(value => {
-        value.push(typeRecord);
+        const findIndex = value.findIndex(typeRecord => typeRecord == this.selectedTypeRecord());
+
+        if (this.showEditForm()) {
+          value[findIndex] = typeRecord;
+
+          this.selectedTypeRecord.set(typeRecord);
+        } else {
+          value.push(typeRecord);
+        }
 
         return value;
       }
     );
+
+    this.showNewForm.set(false);
+    this.showEditForm.set(false);
   }
 
   private lineIdentifierExists() {
@@ -152,6 +165,7 @@ export class Home {
 
   selectTypeRecord(typeRecord: TypeRecord) {
     this.showNewForm.set(false);
+    this.showEditForm.set(false);
     this.selectedTypeRecord.set(typeRecord);
   }
 
@@ -182,4 +196,10 @@ export class Home {
     });
     this.selectedTypeRecord.set(initTypeRecord);
   }
+
+  editSelectedTypeRecord() {
+    this.typeRecordForm.setValue(this.selectedTypeRecord().formControl as any);
+    this.showEditForm.set(true);
+  }
+
 }

@@ -4,6 +4,7 @@ export interface TypeRecord {
   name: string;
   lineIdentifier: string;
   filedTypeRecord: FieldTypeRecord[];
+  formControl: any;
 }
 
 export interface FieldTypeRecord extends RecordField {
