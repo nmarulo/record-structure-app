@@ -7,6 +7,12 @@ import {tap} from 'rxjs';
 import {RecordStructureFileRes} from '@app/models/record-structure-file-res';
 import {ElectronService} from '@app/services/electron.service';
 
+const initTypeRecord = {
+  name: '',
+  lineIdentifier: '',
+  filedTypeRecord: []
+};
+
 @Component({
   selector: 'app-home',
   imports: [
@@ -25,11 +31,7 @@ export class Home {
 
   typeRecords = signal<TypeRecord[]>([]);
 
-  selectedTypeRecord = signal<TypeRecord>({
-    name: '',
-    lineIdentifier: '',
-    filedTypeRecord: []
-  });
+  selectedTypeRecord = signal<TypeRecord>(initTypeRecord);
 
   selectedFilePath = signal<string>('');
 
@@ -169,5 +171,15 @@ export class Home {
   showNewFormEvent() {
     this.typeRecordForm.reset();
     this.showNewForm.set(true);
+  }
+
+  deleteSelectedTypeRecord() {
+    this.typeRecords.update(value => {
+      value.splice(this.typeRecords()
+                       .indexOf(this.selectedTypeRecord()), 1);
+
+      return value;
+    });
+    this.selectedTypeRecord.set(initTypeRecord);
   }
 }
