@@ -4,13 +4,14 @@ import {RecordStructureFileReq} from '@app/models/record-structure-file-req';
 import {RecordStructureFileRes} from '@app/models/record-structure-file-res';
 import {RecordStructureReq} from '@app/models/record-structure-req';
 import {RecordStructureRes} from '@app/models/record-structure-res';
+import {environment} from '@env/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RecordStructure {
 
-  private readonly _recordStructureUri = 'http://localhost:8099/record-structure';
+  private readonly _recordStructureUri = `${environment.RECORD_STRUCTURE_API_URL}/record-structure`;
 
   constructor(private httpClient: HttpClient) {
   }
