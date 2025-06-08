@@ -55,7 +55,7 @@ export class Home {
       const filePath = this.selectedFilePath();
       const typeRecord = this.selectedTypeRecord();
 
-      if (filePath && typeRecord.filedTypeRecord.length) {
+      if (filePath && typeRecord.formControl) {
         this.recordStructureFromFile(filePath, this.selectedTypeRecord());
       }
     });
