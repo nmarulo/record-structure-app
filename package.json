@@ -45,7 +45,7 @@
     "wait-on": "8.0.3"
   },
   "build": {
-    "appId": "dev.nmarulo.record_structure.app",
+    "appId": "dev.nmarulo.record_structure",
     "productName": "Record Structure App",
     "directories": {
       "output": "release"

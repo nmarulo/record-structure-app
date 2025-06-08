@@ -1,4 +1,4 @@
-import {app, BrowserWindow, dialog, ipcMain} from 'electron';
+import {app, BrowserWindow, dialog, ipcMain, Menu} from 'electron';
 import * as path from 'path';
 import * as fs from 'fs';
 import {ChildProcess, spawn} from 'child_process';
@@ -9,8 +9,9 @@ let springBootProcess: ChildProcess | null = null;
 
 function createWindow(): void {
   mainWindow = new BrowserWindow({
-    height: 800,
-    width: 1200,
+    minHeight: 800,
+    minWidth: 1280,
+    center: true,
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
@@ -18,6 +19,8 @@ function createWindow(): void {
     },
     icon: path.join(__dirname, '../public/favicon.ico')
   });
+
+  Menu.setApplicationMenu(null);
 
   if (isDev) {
     mainWindow.loadURL('http://localhost:4200');
