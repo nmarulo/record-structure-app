@@ -202,4 +202,9 @@ export class Home {
     this.showEditForm.set(true);
   }
 
+  cancelForm() {
+    this.showNewForm.set(false);
+    this.showEditForm.set(false);
+    this.typeRecordForm.reset();
+  }
 }
