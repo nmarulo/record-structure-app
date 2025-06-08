@@ -18,6 +18,9 @@
     "paths": {
       "@app/*": [
         "app/*"
+      ],
+      "@env/*": [
+        "environments/*"
       ]
     }
   },
