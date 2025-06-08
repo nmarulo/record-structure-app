@@ -97,9 +97,7 @@ ipcMain.handle('start-spring-boot', async () => {
   }
 
   return new Promise<void>((resolve, reject) => {
-    const resourcesPath = isDev
-      ? path.join(__dirname, '..', '..', 'backend')
-      : path.join(process.resourcesPath, 'api');
+    const resourcesPath = path.join(process.resourcesPath, 'api');
     const jrePath = path.join(resourcesPath, 'jre', 'bin', 'java.exe');
     const jarPath = path.join(resourcesPath, 'record-structure-api.jar');
 
@@ -118,7 +116,7 @@ ipcMain.handle('start-spring-boot', async () => {
     springBootProcess = spawn(jrePath, [
       '-jar',
       jarPath,
-      '--server.port=8099'
+      '--spring.profiles.active=production'
     ], {
       cwd: path.dirname(jarPath),
       stdio: ['ignore', 'pipe', 'pipe']
