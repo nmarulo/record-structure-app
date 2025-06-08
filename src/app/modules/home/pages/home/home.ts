@@ -33,6 +33,8 @@ export class Home {
 
   selectedFilePath = signal<string>('');
 
+  showNewForm = signal(true);
+
   typeRecordForm = this.formBuilder.nonNullable.group({
     name: [''],
     lineIdentifier: [''],
@@ -72,6 +74,8 @@ export class Home {
   }
 
   typeRecordSubmit() {
+    this.showNewForm.set(false);
+
     if (this.lineIdentifierExists()) {
       console.log('error: El identificador de linea ya existe.');
 
@@ -145,6 +149,7 @@ export class Home {
   }
 
   selectTypeRecord(typeRecord: TypeRecord) {
+    this.showNewForm.set(false);
     this.selectedTypeRecord.set(typeRecord);
   }
 
@@ -161,4 +166,8 @@ export class Home {
     }
   }
 
+  showNewFormEvent() {
+    this.typeRecordForm.reset();
+    this.showNewForm.set(true);
+  }
 }
