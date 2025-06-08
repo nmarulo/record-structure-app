@@ -1,1 +1,8 @@
-<router-outlet/>
+@if (backendReady()) {
+  <router-outlet/>
+} @else {
+  <div class="d-flex flex-column justify-content-center align-items-center position-absolute w-100 h-100 bg-dark">
+    <h2><i class="fas fa-2x fa-sync-alt fa-spin"></i></h2>
+    <h3>Iniciando aplicación...</h3>
+  </div>
+}
