@@ -5,6 +5,8 @@ import {RecordStructureFileRes} from '@app/models/record-structure-file-res';
 import {RecordStructureReq} from '@app/models/record-structure-req';
 import {RecordStructureRes} from '@app/models/record-structure-res';
 import {environment} from '@env/environment';
+import {GenerateCsvRecordStructureReq} from '@app/models/generate-csv-record-structure-req';
+import {GenerateCsvRecordStructureRes} from '@app/models/generate-csv-record-structure-res';
 
 @Injectable({
   providedIn: 'root'
@@ -22,5 +24,9 @@ export class RecordStructure {
 
   recordStructureFromFile(request: RecordStructureFileReq) {
     return this.httpClient.post<RecordStructureFileRes>(`${this._recordStructureUri}/file`, request);
+  }
+
+  generateCsv(request: GenerateCsvRecordStructureReq) {
+    return this.httpClient.post<GenerateCsvRecordStructureRes>(`${this._recordStructureUri}/generate-csv`, request);
   }
 }

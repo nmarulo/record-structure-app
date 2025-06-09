@@ -3,10 +3,11 @@ import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
 import {TypeRecord} from '@app/models/type-record';
 import {RecordStructure} from '@app/services/pages/record-structure';
 import {RecordStructureFileReq} from '@app/models/record-structure-file-req';
-import {tap} from 'rxjs';
+import {catchError, tap} from 'rxjs';
 import {RecordStructureFileRes} from '@app/models/record-structure-file-res';
 import {ElectronService} from '@app/services/electron.service';
 import {RecordField} from '@app/models/record-field';
+import {GenerateCsvRecordStructureReq} from '@app/models/generate-csv-record-structure-req';
 
 const initTypeRecord: TypeRecord = {
   name: '',
@@ -208,4 +209,31 @@ export class Home {
     this.showEditForm.set(false);
     this.typeRecordForm.reset();
   }
+
+  downloadCsv() {
+    if (!this.selectedFilePath() || !this.selectedTypeRecord().formControl) {
+      console.error('No hay archivo seleccionado o tipo de registro seleccionado');
+      return;
+    }
+
+    const request: GenerateCsvRecordStructureReq = {
+      filePath: this.selectedFilePath(),
+      lineIdentifier: this.selectedTypeRecord().lineIdentifier,
+      recordFields: this.selectedTypeRecord().typeRecord
+    };
+
+    this.recordStructure.generateCsv(request)
+        .pipe(
+          tap(response => {
+            this.electronService.openFile(response.filePath)
+                .subscribe();
+          }),
+          catchError(error => {
+            console.error('Error al generar CSV:', error);
+            throw error;
+          })
+        )
+        .subscribe();
+  }
+
 }

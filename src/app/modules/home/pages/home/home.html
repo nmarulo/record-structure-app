@@ -173,7 +173,9 @@
                 <div class="card-header">
                   <h3 class="card-title">{{ selectedTypeRecord().name }}</h3>
                   <div class="card-tools">
-                    <button class="btn btn-tool btn-sm">
+                    <button type="button"
+                            class="btn btn-tool btn-sm"
+                            (click)="downloadCsv()">
                       <i class="fas fa-download"></i>
                     </button>
                     <div class="btn-group">
