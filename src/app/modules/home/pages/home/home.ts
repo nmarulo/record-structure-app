@@ -1,16 +1,17 @@
 import {Component, effect, inject, signal} from '@angular/core';
 import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
-import {FieldTypeRecord, TypeRecord} from '@app/models/type-record';
+import {TypeRecord} from '@app/models/type-record';
 import {RecordStructure} from '@app/services/pages/record-structure';
 import {RecordStructureFileReq} from '@app/models/record-structure-file-req';
 import {tap} from 'rxjs';
 import {RecordStructureFileRes} from '@app/models/record-structure-file-res';
 import {ElectronService} from '@app/services/electron.service';
+import {RecordField} from '@app/models/record-field';
 
-const initTypeRecord = {
+const initTypeRecord: TypeRecord = {
   name: '',
   lineIdentifier: '',
-  filedTypeRecord: [],
+  typeRecord: [],
   formControl: null as any
 };
 
@@ -65,7 +66,7 @@ export class Home {
     const request: RecordStructureFileReq = {
       filePath: filePath,
       lineIdentifier: typeRecord.lineIdentifier,
-      recordFields: typeRecord.filedTypeRecord
+      recordFields: typeRecord.typeRecord
     };
 
     this.recordStructure.recordStructureFromFile(request)
@@ -91,7 +92,7 @@ export class Home {
     const typeRecord: TypeRecord = {
       name: this.typeRecordForm.value.name!,
       lineIdentifier: this.typeRecordForm.value.lineIdentifier!,
-      filedTypeRecord: recordFields,
+      typeRecord: recordFields,
       formControl: this.typeRecordForm.getRawValue() as any
     };
 
@@ -144,12 +145,12 @@ export class Home {
   }
 
   private splitRecordFields(lengths: string, columns: string, separator: string) {
-    const recordFields: FieldTypeRecord[] = [];
+    const recordFields: RecordField[] = [];
     const lengthSplit = lengths.split(separator);
     const columnSplit = columns.split(separator);
 
     for (let i = 0; i < lengthSplit.length; i++) {
-      const fieldTypeRecord: FieldTypeRecord = {
+      const fieldTypeRecord: RecordField = {
         columnName: columnSplit[i],
         order: i,
         length: parseInt(lengthSplit[i]),

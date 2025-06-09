@@ -3,4 +3,5 @@ export interface RecordField {
   length: number;
   type: string;
   format: string;
+  columnName: string;
 }
