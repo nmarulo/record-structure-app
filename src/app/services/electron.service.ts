@@ -31,4 +31,13 @@ export class ElectronService {
 
     return from(Promise.resolve());
   }
+
+  openFile(filePath: string) {
+    if (this.isElectron) {
+      return from(this.electronAPI.openFile(filePath)) as Observable<void>;
+    }
+
+    return from(Promise.resolve());
+  }
+  
 }

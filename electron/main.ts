@@ -1,4 +1,4 @@
-import {app, BrowserWindow, dialog, ipcMain, Menu} from 'electron';
+import {app, BrowserWindow, dialog, ipcMain, Menu, shell} from 'electron';
 import * as path from 'path';
 import * as fs from 'fs';
 import {ChildProcess, spawn} from 'child_process';
@@ -156,4 +156,21 @@ ipcMain.handle('start-spring-boot', async () => {
       }
     }, 30000);
   });
+});
+
+ipcMain.handle('open-file', async (_, filePath: string) => {
+  if (!filePath) {
+    throw new Error('Ruta de archivo no proporcionada');
+  }
+
+  if (!fs.existsSync(filePath)) {
+    throw new Error(`El archivo no existe: ${filePath}`);
+  }
+
+  try {
+    await shell.openPath(filePath);
+  } catch (error) {
+    console.error('Error al abrir el archivo:', error);
+    throw error;
+  }
 });
