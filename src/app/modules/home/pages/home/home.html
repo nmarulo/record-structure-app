@@ -175,6 +175,11 @@
                   <div class="card-tools">
                     <button type="button"
                             class="btn btn-tool btn-sm"
+                            (click)="reloadFileSelected()">
+                      <i class="fas fa-sync-alt"></i>
+                    </button>
+                    <button type="button"
+                            class="btn btn-tool btn-sm"
                             (click)="downloadCsv()">
                       <i class="fas fa-download"></i>
                     </button>

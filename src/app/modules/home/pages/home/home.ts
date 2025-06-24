@@ -54,12 +54,7 @@ export class Home {
     private electronService: ElectronService
   ) {
     effect(() => {
-      const filePath = this.selectedFilePath();
-      const typeRecord = this.selectedTypeRecord();
-
-      if (filePath && typeRecord.formControl) {
-        this.recordStructureFromFile(filePath, this.selectedTypeRecord());
-      }
+      this.reloadFileSelected();
     });
   }
 
@@ -236,4 +231,12 @@ export class Home {
         .subscribe();
   }
 
+  reloadFileSelected() {
+    const filePath = this.selectedFilePath();
+    const typeRecord = this.selectedTypeRecord();
+
+    if (filePath && typeRecord.formControl) {
+      this.recordStructureFromFile(filePath, this.selectedTypeRecord());
+    }
+  }
 }
